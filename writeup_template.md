@@ -127,31 +127,31 @@ If an iterative approach was chosen: <br>
 * What were some problems with the initial architecture? <br>
 -> learning rate increase significantly in the beginning but always topped at around 80%
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over fitting or under fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.<br>
--> more data was generated
--> from color space to grayscale
--> from non-normalized to normalized images
+-> more data was generated<br>
+-> from color space to grayscale<br>
+-> from non-normalized to normalized images<br>
 -> include dropout on different layers
 * Which parameters were tuned? How were they adjusted and why? <br>
--> learning rate was increased from 0.001 to 0.005. Learning went faster, and the rate doesn't seem to high to result in a non-optimum
--> epochs: too many epochs resulted in overfitting, to little in underfitting. 10 seemed an acceptable value to the results I get
+-> learning rate was increased from 0.001 to 0.005. Learning went faster, and the rate doesn't seem to high to result in a non-optimum<br>
+-> epochs: too many epochs resulted in overfitting, to little in underfitting. 10 seemed an acceptable value to the results I get<br>
 -> batch size: the higher the faster it learns, but needs more memory. 150 seems an acceptable value in combination with the nr of epochs
 
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
--> Convolutional layer is well suited as it searches for patterns (same weights and biases) anywere in the image, and that's in the end the goal of the CNN: find traffic signs anywhere in the image
+* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?<br>
+-> Convolutional layer is well suited as it searches for patterns (same weights and biases) anywere in the image, and that's in the end the goal of the CNN: find traffic signs anywhere in the image<br>
 -> I've included two dropout layers (one for the first, and one for the second fully conntected layer) to make sure the network can also handle non-complete data.
 
 If a well known architecture was chosen:
-* What architecture was chosen?
+* What architecture was chosen?<br>
 -> LeNet
-* Why did you believe it would be relevant to the traffic sign application?
+* Why did you believe it would be relevant to the traffic sign application?<br>
 -> The original goal of LeNet was to detect written letters. The goal is (about) the same: look anywhere in the image (convolution) for certain patterns
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
+* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?<br>
 -> training,  validation and test accuracy are rougly the same. It's normal that the  test set accuracy is a little lower, as it's a data set which is completely new for the CNN.
  
 
-###Test a Model on New Images
+### Test a Model on New Images
 
-####1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
+#### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
 Here are five German traffic signs that I found on the web:
 
@@ -181,7 +181,7 @@ The model was able to correctly guess 2 of the 5 traffic signs, which gives an a
 
 The code for making predictions on my final model is located in the 20th cell of the Ipython notebook.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -222,7 +222,9 @@ For the fifth image ...
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | .029         			| (33) Turn right ahead  									| 
-| .096     				| (34) Ahead only										|
-| .051					| (37)	Go straight or left									|
-| .002	      			| (16)	Vehicles over 3.5 metric tons prohibited				 				|
-| -.004				    | (9) No passing     							|
+| .0096     				| (34) Ahead only										|
+| .0051					| (37)	Go straight or left									|
+| .0002	      			| (16)	Vehicles over 3.5 metric tons prohibited				 				|
+| -.0004				    | (9) No passing     							|
+
+To me it seems the algorithm is never really sure about it's predictions, and if the prediction is right, it's really not overwhelming...
