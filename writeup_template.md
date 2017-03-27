@@ -14,6 +14,11 @@ The goals / steps of this project are the following:
 [initial_histogram]: ./histogram_initial.png "Initial Data Histogram Visualization"
 [proprocess_grayscale]: ./visualize_preprocess_grayscale.png "Preprocessing: grayscale"
 [preprocess_augment_rotate]: ./visualize_preprocess_rotate.png "Preprocessing: rotation"
+[german1]: ./external/sign1.png
+[german2]: ./external/sign2.png
+[german3]: ./external/sign3.png
+[german4]: ./external/sign4.png
+[german5]: ./external/sign5.png
 
 ## Rubric Points
 Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -95,32 +100,51 @@ My final model consisted of the following layers:
 | Dropout | keep probability 0.6 |
 | Fully connected		| input 80, output 43        									|
 
-####4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+#### 4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-The code for training the model is located in the eigth cell of the ipython notebook. 
+The code for training the model is located in the eleventh cell of the ipython notebook. 
+The most important parameters are: 
+* EPOCHS: 10
+* BATCH_SIZE: 150
+* learning rate: 0.005
 
-To train the model, I used an ....
+To train the model, I used an .... TODO!
 
-####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+#### 5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
-The code for calculating the accuracy of the model is located in the ninth cell of the Ipython notebook.
+The code for calculating the accuracy of the model is located in the thirteenth cell of the Ipython notebook.
 
 My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
-* test set accuracy of ?
+* training set accuracy of: 0.931
+* validation set accuracy of 0.931
+* test set accuracy of: 0.914
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
+The first architecture was the example LeNet from the course, without grayscale images, no normalization and no fake data
 * What were some problems with the initial architecture?
+learning rate increase significantly in the beginning but always topped at around 80%
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over fitting or under fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
+-> more data was generated
+-> from color space to grayscale
+-> from non-normalized to normalized images
+-> include dropout on different layers
 * Which parameters were tuned? How were they adjusted and why?
+-> learning rate was increased from 0.001 to 0.005. Learning went faster, and the rate doesn't seem to high to result in a non-optimum
+-> epochs: too many epochs resulted in overfitting, to little in underfitting. 10 seemed an acceptable value to the results I get
+-> batch size: the higher the faster it learns, but needs more memory. 150 seems an acceptable value in combination with the nr of epochs
+
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+-> Convolutional layer is well suited as it searches for patterns (same weights and biases) anywere in the image, and that's in the end the goal of the CNN: find traffic signs anywhere in the image
+-> I've included two dropout layers (one for the first, and one for the second fully conntected layer) to make sure the network can also handle non-complete data.
 
 If a well known architecture was chosen:
 * What architecture was chosen?
+-> LeNet
 * Why did you believe it would be relevant to the traffic sign application?
+-> The original goal of LeNet was to detect written letters. The goal is (about) the same: look anywhere in the image (convolution) for certain patterns
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
+-> training,  validation and test accuracy are rougly the same. It's normal that the  test set accuracy is a little lower, as it's a data set which is completely new for the CNN.
  
 
 ###Test a Model on New Images
@@ -129,8 +153,7 @@ If a well known architecture was chosen:
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![German Traffic Sign 1][german1] ![German Traffic Sign 2][german2] ![German Traffic Sign 3][german3] ![German Traffic Sign 4][german4] ![German Traffic Sign 5][german5]
 
 The first image might be difficult to classify because ...
 
