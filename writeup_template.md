@@ -155,38 +155,72 @@ Here are five German traffic signs that I found on the web:
 
 ![German Traffic Sign 1][german1] ![German Traffic Sign 2][german2] ![German Traffic Sign 3][german3] ![German Traffic Sign 4][german4] ![German Traffic Sign 5][german5]
 
-The first image might be difficult to classify because ...
+There are some complexities which I expect with those images:
+* resolution isn't always great
+* there's some distortion on the signs
 
-####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
-The code for making predictions on my final model is located in the tenth cell of the Ipython notebook.
+The code for making predictions on my final model is located in the eightteenth cell of the Ipython notebook. The performance of the model was measured in the next cell.
 
 Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| (9) No Passing      		| (32) End of all speed and passing limits   									| 
+| (28) Children Crossing     			| (30) Beware of ice/snow										|
+| (5) Speed Limit 80km/h					| (0) Speed limit 20km/h											|
+| (17) No Entry	      		| (17) No Entry					 				|
+| (33) Turn Right Ahead			| (33) Turn Right Ahead      							|
 
+The model was able to correctly guess 2 of the 5 traffic signs, which gives an accuracy of 40%. This does not really compare to the accuracy of the test/validation sets, which result in more than 90% accuracy.<br>
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
-
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 20th cell of the Ipython notebook.
 
 For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
-
+| .078         			| (32) End of all speed and passing limits    									| 
+| .069     				| (9)	No passing									|
+| .056					| (41)	End of no passing									|
+| .037	      			| (19)	Dangerous curve to the left				 				|
+| .023				    | (23) Slippery road      							|
 
 For the second image ... 
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .040         			| (30) Beware of ice/snow  									| 
+| .036     				| (11) Right-of-way at the next intersection									|
+| .029					| (12)	Priority road									|
+| .011	      			| (21) Double curve					 				|
+| .006				    | (40) Roundabout mandatory      							|
+
+For the third image ... 
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .075         			| (0) Speed limit (20km/h)  									| 
+| .045     				| (1)	Speed limit (30km/h)									|
+| .038					| (2)	Speed limit (50km/h)									|
+| .090	      			| (24)	Road narrows on the right				 				|
+| -.01				    | (26) Traffic signals     							|
+
+For the fourth image ... 
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .14         			| (17) No entry   									| 
+| .066     				| (22)	Bumpy road									|
+| .048					| (29)	Bicycles crossing									|
+| .023	      			| (14)	Stop				 				|
+| -.032				    | (13) Yield     							|
+
+For the fifth image ... 
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .029         			| (33) Turn right ahead  									| 
+| .096     				| (34) Ahead only										|
+| .051					| (37)	Go straight or left									|
+| .002	      			| (16)	Vehicles over 3.5 metric tons prohibited				 				|
+| -.004				    | (9) No passing     							|
