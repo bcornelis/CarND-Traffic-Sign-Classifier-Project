@@ -69,7 +69,7 @@ In cell 4, in the generateFakeData method, for augmenting the data set, I decide
 
 Here's a sample augmented image using rotation:
 
-![preprocess_augment_rotate][Preprocess: rotation]
+![Preprocess: rotation][preprocess_augment_rotate]
 
 #### 3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
