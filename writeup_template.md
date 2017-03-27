@@ -11,7 +11,9 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/visualization.jpg "Visualization"
+[initial_histogram]: ./histogram_initial.png "Initial Data Histogram Visualization"
+[proprocess_grayscale]: ./visualize_preprocess_grayscale.png "Preprocessing: grayscale"
+[preprocess_augment_rotate]: ./visualize_preprocess_rotate.png "Preprocessing: rotation"
 
 ## Rubric Points
 Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -41,60 +43,57 @@ n_classes = len(np.unique(y_train)) = 43
 
 The code for this step is contained in the third code cell of the IPython notebook.  
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Here is an exploratory visualization of the data set. It's a histogram showing how the sample data is distributed according to the final classes. This kind of visualization directly shows that for some classes, there is a lot of training data (for example class 1 and 2) and for other classes theres very few training samples (for example class 19). The interesting thing about this information is:
+* if there's only a very limit set of data for a specific class, there's a (very) low chance the CNN can properly classify objects of this class
+* it clearly shows that for additional data (fake data generation, more sample data, ...) we'll have to focus on those classes (with the lowest number of samples) first.
 
-![alt text][image1]
+![Initial Data Histogram Visualization][initial_histogram]
 
-###Design and Test a Model Architecture
+### Design and Test a Model Architecture
 
-####1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
+#### 1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
 
-The code for this step is contained in the fourth code cell of the IPython notebook.
+The code for this step is contained in the fourth code cell of the IPython notebook. The two methods in there are <i>applyPreProcessing</i> to normalize and grayscale the images, and <i>generateFakeData</i> to generate more samples.
 
-As a first step, I decided to convert the images to grayscale because ...
+First all images have been converted to grayscale. The reason for doing this is that when using a color image, the CNN would also learn about colors (and probably after a lot of sample data find out itself) which is irrelevant for traffic sign generation. So by converting the images to grayscale, there's only a single color dimension, instead of 3 which the CNN can learn from.
 
-Here is an example of a traffic sign image before and after grayscaling.
+![Preprocessing: grayscale][proprocess_grayscale]
 
-![alt text][image2]
+Next the image is normalized. As the image is grayscale, there's a single color component in the range from [0, 255]. By normalizing the image (divide by 255.) the range is reduced to [0., 1.]
 
-As a last step, I normalized the image data because ...
+#### 2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
-####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
+The code for splitting the data into training, validation and test set was already included, as it was included in the  traffic-signs-data.zip file. The methods used here is the picle library which allows to serialize data to a file, and reload it (deserialize it) afterwards. As there were already 3 test sets included, no extra work was required.
 
-The code for splitting the data into training and validation sets is contained in the fifth code cell of the IPython notebook.  
+In cell 4, in the generateFakeData method, for augmenting the data set, I decided to generate some random data, starting from the already existing images, and apply simple rotations using cv2.getRotationMatrix2D from the OpenCV library. First I find out what the mean number of samples per class in the test set is. I generate more images for all classes not having this number of images in the set.
 
-To cross validate my model, I randomly split the training data into a training set and validation set. I did this by ...
+Here's a sample augmented image using rotation:
 
-My final training set had X number of images. My validation set and test set had Y and Z number of images.
+![preprocess_augment_rotate][Preprocess: rotation]
 
-The sixth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data because ... To add more data to the the data set, I used the following techniques because ... 
+#### 3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
-Here is an example of an original image and an augmented image:
-
-![alt text][image3]
-
-The difference between the original data set and the augmented data set is the following ... 
-
-
-####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
-
-The code for my final model is located in the seventh cell of the ipython notebook. 
+The code for my final model is located in the eigth cell of the ipython notebook. 
 
 My final model consisted of the following layers:
 
-| Layer         		|     Description	        					| 
+| Layer         		  |     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Input         		| 32x32x1 grayscaled and normalized image   							| 
+| Convolution 5x5     	| 1x1 stride, valid padding, 1 input feature map, 6 output classes, outputs 28x28x6 	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
-|						|												|
-|						|												|
- 
-
+| Max pooling	      	| 2x2 stride, 2x2 filter, valid padding, outputs 14x14x6 				|
+| Convolution 5x5	    | 1x1 stride, valid padding, 6 input feature maps, 16 output classes, outputs 10x10x16 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride, 2x2 filter, valid padding, outputs 5x5x16 				|
+| flatten |  5x5x16 input, 400 output
+| Fully connected		| input 400, output 120        									|
+| RELU					|												|
+| Dropout | keep probability 0.6 |
+| Fully connected		| input 120, output 80        									|
+| RELU					|												|
+| Dropout | keep probability 0.6 |
+| Fully connected		| input 80, output 43        									|
 
 ####4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
