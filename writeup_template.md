@@ -36,13 +36,13 @@ The code for this step is contained in the second code cell of the IPython noteb
 I used default python code to get the length of some arrays, find the shape of the images and numphy.unique to find out how many different items (classes) the data contains,
 
 * The size of training set is: <br>
-n_train = len(X_train) = 34799
+-> n_train = len(X_train) = 34799
 * The size of test set is:  <br>
-n_test = len(X_test) = 12630
+-> n_test = len(X_test) = 12630
 * The shape of a traffic sign image is: <br>
-image_shape = X_train[0].shape = (32, 32, 3)
+-> image_shape = X_train[0].shape = (32, 32, 3)
 * The number of unique classes/labels in the data set is: <br>
-n_classes = len(np.unique(y_train)) = 43
+-> n_classes = len(np.unique(y_train)) = 43
 
 2. Include an exploratory visualization of the dataset and identify where the code is in your code file.
 
@@ -108,7 +108,9 @@ The most important parameters are:
 * BATCH_SIZE: 150
 * learning rate: 0.005
 
-To train the model, I used an .... TODO!
+To train the model, I used:
+* for the optimizer: AdamOptimizer
+* for the loss function: mean reduction of the cross entropy loss 
 
 #### 5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
@@ -119,17 +121,17 @@ My final model results were:
 * validation set accuracy of 0.931
 * test set accuracy of: 0.914
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-The first architecture was the example LeNet from the course, without grayscale images, no normalization and no fake data
-* What were some problems with the initial architecture?
-learning rate increase significantly in the beginning but always topped at around 80%
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over fitting or under fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
+If an iterative approach was chosen: <br>
+* What was the first architecture that was tried and why was it chosen? <br>
+-> The first architecture was the example LeNet from the course, without grayscale images, no normalization and no fake data
+* What were some problems with the initial architecture? <br>
+-> learning rate increase significantly in the beginning but always topped at around 80%
+* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over fitting or under fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.<br>
 -> more data was generated
 -> from color space to grayscale
 -> from non-normalized to normalized images
 -> include dropout on different layers
-* Which parameters were tuned? How were they adjusted and why?
+* Which parameters were tuned? How were they adjusted and why? <br>
 -> learning rate was increased from 0.001 to 0.005. Learning went faster, and the rate doesn't seem to high to result in a non-optimum
 -> epochs: too many epochs resulted in overfitting, to little in underfitting. 10 seemed an acceptable value to the results I get
 -> batch size: the higher the faster it learns, but needs more memory. 150 seems an acceptable value in combination with the nr of epochs
