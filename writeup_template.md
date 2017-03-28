@@ -64,7 +64,7 @@ First all images have been converted to grayscale. The reason for doing this is 
 
 ![Preprocessing: grayscale][proprocess_grayscale]
 
-Next the image is normalized. As the image is grayscale, there's a single color component in the range from [0, 255]. By normalizing the image (divide by 255.) the range is reduced to [0., 1.]
+Next the image is normalized. As the image is grayscale, there's a single color component in the range from [0, 255]. By normalizing the image (divide by 128. - 1.) the range is reduced to [-1., 1.], which has roughly zero mean and equal variance.
 
 #### 2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
@@ -75,6 +75,8 @@ In cell 4, in the generateFakeData method, for augmenting the data set, I decide
 Here's a sample augmented image using rotation:
 
 ![Preprocess: rotation][preprocess_augment_rotate]
+
+(Review note) First, I was rotating images randomly between 0 and 360 degrees. I've updated this to rotate randomly between [-20,20] degrees as this more realisticly reflect the images we'll see in real life.
 
 #### 3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
@@ -108,6 +110,9 @@ The most important parameters are:
 * BATCH_SIZE: 150
 * learning rate: 0.005
 
+(AFTER REVIEW 1)
+I will perform at least 5 epochs, maximum 50, and stop if the current accuracy is the lowest of the latest 5.
+
 To train the model, I used:
 * for the optimizer: AdamOptimizer
 * for the loss function: mean reduction of the cross entropy loss 
@@ -117,9 +122,9 @@ To train the model, I used:
 The code for calculating the accuracy of the model is located in the thirteenth cell of the Ipython notebook.
 
 My final model results were:
-* training set accuracy of: 0.931
-* validation set accuracy of 0.931
-* test set accuracy of: 0.914
+* training set accuracy of: 0.952
+* validation set accuracy of 0.952
+* test set accuracy of: 0.925
 
 If an iterative approach was chosen: <br>
 * What was the first architecture that was tried and why was it chosen? <br>
@@ -135,6 +140,8 @@ If an iterative approach was chosen: <br>
 -> learning rate was increased from 0.001 to 0.005. Learning went faster, and the rate doesn't seem to high to result in a non-optimum<br>
 -> epochs: too many epochs resulted in overfitting, to little in underfitting. 10 seemed an acceptable value to the results I get<br>
 -> batch size: the higher the faster it learns, but needs more memory. 150 seems an acceptable value in combination with the nr of epochs
+
+(AFTER REVIEW) the number of epochs was no longer chosen statically. As explained before, at least 5 epochs, maximum 50, and stop if the currect accuracy is lower than the latest 5.
 
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?<br>
 -> Convolutional layer is well suited as it searches for patterns (same weights and biases) anywere in the image, and that's in the end the goal of the CNN: find traffic signs anywhere in the image<br>
@@ -185,46 +192,50 @@ The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .078         			| (32) End of all speed and passing limits    									| 
-| .069     				| (9)	No passing									|
-| .056					| (41)	End of no passing									|
-| .037	      			| (19)	Dangerous curve to the left				 				|
-| .023				    | (23) Slippery road      							|
+| .29         			| (32) End of all speed and passing limits    									| 
+| .26     				| (9)	No passing									|
+| .21					| (41)	End of no passing									|
+| .10	      			| (19)	Dangerous curve to the left				 				|
+| .06				    | (23) Slippery road      							|
 
 For the second image ... 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .040         			| (30) Beware of ice/snow  									| 
-| .036     				| (11) Right-of-way at the next intersection									|
-| .029					| (12)	Priority road									|
-| .011	      			| (21) Double curve					 				|
-| .006				    | (40) Roundabout mandatory      							|
+| .97         			| (30) Beware of ice/snow  									| 
+| .017     				| (11) Right-of-way at the next intersection									|
+| .017					| (12)	Priority road									|
+| .0004	      			| (21) Double curve					 				|
+| .0003				    | (40) Roundabout mandatory      							|
 
 For the third image ... 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .075         			| (0) Speed limit (20km/h)  									| 
-| .045     				| (1)	Speed limit (30km/h)									|
-| .038					| (2)	Speed limit (50km/h)									|
-| .090	      			| (24)	Road narrows on the right				 				|
-| -.01				    | (26) Traffic signals     							|
+| .99         			| (0) Speed limit (20km/h)  									| 
+| .0     				| (1)	Speed limit (30km/h)									|
+| .0					| (2)	Speed limit (50km/h)									|
+| .0	      			| (24)	Road narrows on the right				 				|
+| .0				    | (26) Traffic signals     							|
 
 For the fourth image ... 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .14         			| (17) No entry   									| 
-| .066     				| (22)	Bumpy road									|
-| .048					| (29)	Bicycles crossing									|
-| .023	      			| (14)	Stop				 				|
-| -.032				    | (13) Yield     							|
+| 1.00         			| (17) No entry   									| 
+| .0     				| (22)	Bumpy road									|
+| .0					| (29)	Bicycles crossing									|
+| .0	      			| (14)	Stop				 				|
+| .0				    | (13) Yield     							|
 
 For the fifth image ... 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .029         			| (33) Turn right ahead  									| 
-| .0096     				| (34) Ahead only										|
-| .0051					| (37)	Go straight or left									|
-| .0002	      			| (16)	Vehicles over 3.5 metric tons prohibited				 				|
-| -.0004				    | (9) No passing     							|
+| .99         			| (33) Turn right ahead  									| 
+| .0     				| (34) Ahead only										|
+| .0					| (37)	Go straight or left									|
+| .0	      			| (16)	Vehicles over 3.5 metric tons prohibited				 				|
+| .0				    | (9) No passing     							|
 
-To me it seems the algorithm is never really sure about it's predictions, and if the prediction is right, it's really not overwhelming...
+Interesting too see:
+* the last two images are classified correctly with (almost) certain prediction
+* the 2nd and 3rd images are wrongly classified with high prediction certainty
+* the first one is classified wrongly with low prediction certainty.
+
